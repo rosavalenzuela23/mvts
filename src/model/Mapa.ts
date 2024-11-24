@@ -10,7 +10,8 @@ export class Mapa {
     private static instance: Mapa = undefined;
 
     private constructor() {
-
+        this.semaforos = new Map();
+        this.caminos = new Map();
     }
 
     static obtenerInstancia(): Mapa {

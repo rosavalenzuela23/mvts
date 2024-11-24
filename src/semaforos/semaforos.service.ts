@@ -10,7 +10,7 @@ export class SemaforosService {
     ){}
 
     cambiarEstadoSemaforo(idSemaforo: string, estado: ESTADOS_SEMAFORO) {
-        this.envioEstados.emit(idSemaforo, estado);
+        this.envioEstados.emit("actualizar"+idSemaforo, estado);
     }
 
 }
