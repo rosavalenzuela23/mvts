@@ -21,7 +21,7 @@ import { SemaforosService } from './semaforos/semaforos.service';
       }
     },
     {
-      name: 'EststadosSemaforos',
+      name: 'EstadosSemaforos',
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
