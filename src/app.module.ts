@@ -5,6 +5,7 @@ import { SemaforosController } from './semaforos/semaforos.controller';
 import { VehiculosController } from './vehiculos/vehiculos.controller';
 import { EstacionCentralService } from './estacion-central/estacion-central.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SemaforosService } from './semaforos/semaforos.service';
 
 @Module({
   imports: [ClientsModule.register([
@@ -24,11 +25,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
-        queue: ''
+        queue: 'semaforos.estado_queue'
       }
     }
   ])],
   controllers: [AppController, SemaforosController, VehiculosController],
-  providers: [AppService, EstacionCentralService],
+  providers: [AppService, EstacionCentralService, SemaforosService],
 })
 export class AppModule { }
