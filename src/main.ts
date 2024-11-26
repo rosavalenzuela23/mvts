@@ -35,7 +35,10 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
     connection.createChannel((err1, channel) => {
         if (err1) throw err1;
 
-        channel.assertQueue(env.estacioCentral_queue, {});
+        channel.assertQueue(env.estacioCentral_queue, {
+            durable: false,
+            autoDelete: true
+        });
 
         channel.consume(env.estacioCentral_queue, msg => recibirInformacionEstacionCentral(msg));
         canales.set(env.estacioCentral_queue, channel);
