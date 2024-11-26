@@ -69,4 +69,21 @@ export class Mapa {
         }
     }
 
+    toJsonString(): string { 
+
+        let aux: any = {}
+        aux['caminos'] = [];
+        aux['semaforos'] = [];
+
+        for (const c of this.caminos.values()) {
+            aux['caminos'].push(c);
+        }
+
+        for (const s of this.semaforos.values()) {
+            aux['semaforos'].push(s);
+        }
+
+        return JSON.stringify(aux);
+    }
+
 }

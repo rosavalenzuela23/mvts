@@ -2,7 +2,7 @@ import * as amqp from 'amqplib/callback_api';
 import { env } from 'process';
 import { recibirMensajeSemaforos } from './semaforos';
 import { channel } from 'diagnostics_channel';
-import { recibirInformacionEstacionCentral } from './estacioncentral';
+import { actualizarEstacionCentral, recibirInformacionEstacionCentral } from './estacioncentral';
 import { Mapa } from './model/Mapa';
 import { recibirMensajeVehiculos } from './vehiculos';
 import { configurarMapa } from './configuracionmapa';
@@ -35,16 +35,12 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
     connection.createChannel((err1, channel) => {
         if (err1) throw err1;
 
-        channel.assertQueue(env.estacioCentral_queue, {
-            durable: false,
-            autoDelete: true
-        });
+        channel.assertQueue(env.estacioCentral_queue, {});
 
         channel.consume(env.estacioCentral_queue, msg => recibirInformacionEstacionCentral(msg));
         canales.set(env.estacioCentral_queue, channel);
         console.log('escuchando en %s', env.estacioCentral_queue)
     });
-
 
     //crear la conexion para escuchar toda la informacion que llegue de los vehiculos
     connection.createChannel((err1, channel) => {
@@ -68,7 +64,7 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
 
 setInterval(() => {
     console.log('INFORMACION MAPA-----');
-    console.log(JSON.stringify(Mapa.obtenerInstancia()));
+    console.log(Mapa.obtenerInstancia().toJsonString());
     console.log('FIN INFORMACION MAPA-----');
 }, 5000);
 
