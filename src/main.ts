@@ -4,10 +4,14 @@ import { recibirMensajeSemaforos } from './semaforos';
 import { channel } from 'diagnostics_channel';
 import { recibirInformacionEstacionCentral } from './estacioncentral';
 import { Mapa } from './model/Mapa';
+import { recibirMensajeVehiculos } from './vehiculos';
+import { configurarMapa } from './configuracionmapa';
 
 require('dotenv').config();
 
 const canales = new Map<string, amqp.Channel>();
+
+configurarMapa(); //configurar el los caminos del mapa
 
 amqp.connect(env.urlRabbit, (err0, connection) => {
     if (err0) throw err0;
@@ -41,6 +45,19 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
         console.log('escuchando en %s', env.estacioCentral_queue)
     });
 
+
+    //crear la conexion para escuchar toda la informacion que llegue de los vehiculos
+    connection.createChannel((err1, channel) => {
+        if (err1) throw err1;
+
+        channel.assertQueue(env.vehiculos_queue, {
+            durable: false
+        });
+
+        channel.consume(env.vehiculos_queue, msg => recibirMensajeVehiculos(msg));
+        canales.set(env.vehiculos_queue, channel);
+    })
+
     //canal para enviar mensajes a alguna cola dentro de la arquitectura del mvts
     connection.createChannel((err1, channel) => {
         if (err1) throw err1;
@@ -51,8 +68,8 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
 
 setInterval(() => {
     console.log('INFORMACION MAPA-----');
-    console.log(Mapa.obtenerInstancia())
+    console.log(JSON.stringify(Mapa.obtenerInstancia()));
     console.log('FIN INFORMACION MAPA-----');
-}, 10000);
+}, 5000);
 
 export { canales };
