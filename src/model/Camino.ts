@@ -8,6 +8,8 @@ export class Camino {
     public posicionInicio: Posicion;
     public posicionFinal: Posicion;
     public nombre: string;
+    public cantidadParaCongestion: number;
+    public estaCongestionado: boolean;
 
     constructor(posicionInicio: Posicion, posicionFinal: Posicion) {
         this.vehiculos = new Map();
@@ -25,12 +27,19 @@ export class Camino {
 
         const vposicion = vehiculo.posicion;
 
-        if (this.verificarPosicion(vposicion)) {
-            this.vehiculos.set(vehiculo.identificador, vehiculo);
-            return true;
+        if (!this.verificarPosicion(vposicion)) {
+            return false;
         }
         
-        return false;
+        this.vehiculos.set(vehiculo.identificador, vehiculo);
+        
+        if (this.vehiculos.size >= this.cantidadParaCongestion) {
+            this.estaCongestionado = true;
+        } else {
+            this.estaCongestionado = false;
+        }
+
+        return true;
     }
 
     /**
@@ -71,6 +80,10 @@ export class Camino {
                     continue;
                 }
                 mapaAux.set(iVehiculo.identificador, iVehiculo);
+                //Le quita la congestion al camino
+                if (this.estaCongestionado && this.cantidadParaCongestion < this.vehiculos.size) {
+                    this.estaCongestionado = false;
+                }
             }
             this.vehiculos = mapaAux;
             //cambiarlo de camino

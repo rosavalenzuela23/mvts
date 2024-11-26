@@ -8,7 +8,8 @@
         "posicionFinal": {
             "x": 400,
             "y": 10
-        }
+        },
+        "cantidadParaCongestion": 2
     },
     {
         "nombre": "camino2",
@@ -19,6 +20,7 @@
         "posicionFinal": {
             "x": 400,
             "y": 410
-        }
+        },
+        "cantidadParaCongestion": 3
     }
 ]
