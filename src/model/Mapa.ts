@@ -1,4 +1,5 @@
 import { Camino } from "./Camino";
+import { ESTADOS_SEMAFORO } from "./ESTADOS_SEMAFORO";
 import { Semaforo } from "./Semaforo";
 import { Vehiculo } from "./Vehiculo";
 
@@ -7,7 +8,7 @@ export class Mapa {
     private semaforos: Map<string, Semaforo>;
     private caminos: Map<string, Camino>;
 
-    private static instance: Mapa = undefined;
+    private static instance: Mapa | undefined = undefined;
 
     private constructor() {
         this.semaforos = new Map();
@@ -27,7 +28,13 @@ export class Mapa {
 
     actualizarSemaforo(semaforo: Semaforo) {
         if (this.semaforos.get(semaforo.id) === undefined) {
-            throw Error('El semaforo no existe');
+            throw new Error('El semaforo no existe');
+        }
+
+        if (semaforo.estado === ESTADOS_SEMAFORO.VERDE) {
+            semaforo.estado = ESTADOS_SEMAFORO.ROJO;
+        } else {
+            semaforo.estado = ESTADOS_SEMAFORO.VERDE;
         }
 
         this.semaforos.set(semaforo.id, semaforo);

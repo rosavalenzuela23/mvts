@@ -5,6 +5,6 @@ export class Vehiculo {
 
     public posicion: Posicion;
     public carga: Carga;
-    public identificador;
+    public identificador: string;
     
 }
