@@ -6,6 +6,7 @@ import { actualizarEstacionCentral, recibirInformacionEstacionCentral } from './
 import { Mapa } from './model/Mapa';
 import { recibirMensajeVehiculos } from './vehiculos';
 import { configurarMapa } from './configuracionmapa';
+import * as fs from 'fs';
 
 require('dotenv').config();
 
@@ -13,7 +14,14 @@ const canales = new Map<string, amqp.Channel>();
 
 configurarMapa(); //configurar el los caminos del mapa
 
-amqp.connect(env.urlRabbit, (err0, connection) => {
+const conf = {
+    cert: fs.readFileSync('./llaves/client_natsu_certificate.pem'),
+    key: fs.readFileSync('./llaves/client_natsu_key.pem'),
+    passphrase: 'hola123',
+    ca: [fs.readFileSync('./llaves/ca_certificate.pem')]
+}
+
+amqp.connect(env.urlRabbit, conf, (err0, connection) => {
     if (err0) throw err0;
 
     //escuchar por los semaforos
