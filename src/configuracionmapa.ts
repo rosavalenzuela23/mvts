@@ -1,5 +1,6 @@
 import { readFileSync } from "fs"
 import { Mapa } from "./model/Mapa";
+import { Camino } from "./model/Camino";
 
 const nombreArchivo = './posicionCaminos.json'
 
@@ -9,8 +10,7 @@ export function configurarMapa() {
     const file = readFileSync(nombreArchivo);
     const json = JSON.parse(file.toString());
     for (const camino of json) {
-        console.log(camino);
-        Mapa.obtenerInstancia().agregarCamino(camino);       
+        Mapa.obtenerInstancia().agregarCamino(Camino.construirConJson(camino));       
     }
 
     //se deja a consideracion futuras configuraciones

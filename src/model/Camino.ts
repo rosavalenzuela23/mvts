@@ -17,6 +17,12 @@ export class Camino {
         this.posicionInicio = posicionInicio;
     }
 
+    static construirConJson(json: any): Camino {
+        const aux = new Camino(json.posicionInicio, json.posicionFinal);
+        aux.nombre = json.nombre;
+        return aux;
+    }
+
     /**
      * Metodo que verifica si el vehiculo esta en las mismas coordenadas del camino y en caso de que
      * se cierto, lo agrega
