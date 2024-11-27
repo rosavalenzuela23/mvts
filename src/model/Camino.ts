@@ -100,6 +100,18 @@ export class Camino {
         this.vehiculos.set(vehiculo.identificador, vehiculo);
     }
 
-    
+    toJsonString(): any {
+        const aux: any = {}
+        aux['vehiculos'] = [];
+        aux.posicionInicio = this.posicionInicio;
+        aux.posicionFinal = this.posicionFinal;
+        aux.nombre = this.nombre;
+
+        for (const v of this.vehiculos.values()) {
+            aux['vehiculos'].push(v);
+        }
+
+        return aux;
+    }
 
 }

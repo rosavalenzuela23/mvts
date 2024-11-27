@@ -76,7 +76,7 @@ export class Mapa {
         aux['semaforos'] = [];
 
         for (const c of this.caminos.values()) {
-            aux['caminos'].push(c);
+            aux['caminos'].push(c.toJsonString());
         }
 
         for (const s of this.semaforos.values()) {
