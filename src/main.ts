@@ -50,7 +50,8 @@ amqp.connect(env.urlRabbit, (err0, connection) => {
         if (err1) throw err1;
 
         channel.assertQueue(env.vehiculos_queue, {
-            durable: false
+            durable: false,
+            autoDelete: true
         });
 
         channel.consume(env.vehiculos_queue, msg => recibirMensajeVehiculos(msg));
