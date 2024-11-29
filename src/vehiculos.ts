@@ -16,4 +16,5 @@ export function recibirMensajeVehiculos(msg: Message) {
 
     actualizarEstacionCentral() //funcion foraneo
     console.log('Peticion realizada con exito');
+    console.log(Mapa.obtenerInstancia().toJsonString())
 }
